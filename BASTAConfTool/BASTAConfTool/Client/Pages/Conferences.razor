@@ -1,9 +1,10 @@
 ﻿@page "/conferences"
 
 @using DTO = BASTAConfTool.Shared.DTO
+@using BASTAConfTool.Client.Services
 
-@inject HttpClient _http
-@inject NavigationManager  _navigation
+@inject ConferencesClientService _conferencesClient
+@inject NavigationManager _navigation
 
 <h1>Conferences</h1>
 
@@ -26,7 +27,6 @@ else
                 </tr>
             </Virtualize>
 
-            
         </tbody>
     </table>
 }
@@ -36,7 +36,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _conferences = await _http.GetFromJsonAsync<List<DTO.ConferenceOverview>>("api/conferences");
+        _conferences = await _conferencesClient.GetConferencesAsync();
     }
 
     private void LoadDetails(Guid id)
