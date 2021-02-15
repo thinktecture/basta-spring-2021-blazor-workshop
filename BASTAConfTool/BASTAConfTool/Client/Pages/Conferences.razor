@@ -20,22 +20,23 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var conf in _conferences)
-            {
-                <tr @key="@conf.ID" @onclick="() => LoadDetails(conf.ID)">
+            <Virtualize Items="@_conferences" Context="conf">
+                <tr @onclick="() => LoadDetails(conf.ID)" @key="conf.ID">
                     <td>@conf.Title</td>
                 </tr>
-            }
+            </Virtualize>
+
+            
         </tbody>
     </table>
 }
 
 @code {
-    private IEnumerable<DTO.ConferenceOverview> _conferences;
+    private List<DTO.ConferenceOverview> _conferences;
 
     protected override async Task OnInitializedAsync()
     {
-        _conferences = await _http.GetFromJsonAsync<DTO.ConferenceOverview[]>("api/conferences");
+        _conferences = await _http.GetFromJsonAsync<List<DTO.ConferenceOverview>>("api/conferences");
     }
 
     private void LoadDetails(Guid id)
