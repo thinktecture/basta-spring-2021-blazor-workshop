@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using BASTAConfTool.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using FluentValidation.AspNetCore;
+using BASTAConfTool.Shared.Validation;
 
 namespace BASTAConfTool.Server
 {
@@ -26,6 +28,9 @@ namespace BASTAConfTool.Server
                 options => options.UseInMemoryDatabase(databaseName: "ConfTool"));
 
             //services.AddSwaggerGen();
+
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ConferenceDetailsValidator>());
 
             services.AddControllersWithViews();
             services.AddRazorPages();

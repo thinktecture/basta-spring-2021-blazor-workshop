@@ -42,7 +42,7 @@ namespace BASTAConfTool.Client.Pages
 
         private async Task SaveConference()
         {
-            // await _conferencesService.AddConference(_conferenceDetails);
+            await _conferencesClient.AddConferenceAsync(_conferenceDetails);
 
             Console.WriteLine("NEW Conference added...");
         }

@@ -1,23 +1,11 @@
 ﻿@page "/conferences/{mode}"
 @page "/conferences/{mode}/{id:guid}"
 
-@switch (Mode)
-{
-    case ConferenceDetailsModes.Show:
-        <h3>Conference Details</h3>
-        break;
-
-    case ConferenceDetailsModes.New:
-        <h3>New Conference</h3>
-        break;
-
-    case ConferenceDetailsModes.Edit:
-        <h3>Edit Conference</h3>
-        break;
-}
+<ConferenceHeader Mode="@Mode" />
 
 <EditForm Model="_conferenceDetails" OnValidSubmit="@SaveConference">
     <DataAnnotationsValidator/>
+    <FluentValidationValidator/>
     <ValidationSummary/>
 
     <div class="form-group">
