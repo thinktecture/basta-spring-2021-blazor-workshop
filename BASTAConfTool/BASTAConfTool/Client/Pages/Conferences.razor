@@ -2,6 +2,7 @@
 
 @using DTO = BASTAConfTool.Shared.DTO
 @using BASTAConfTool.Client.Services
+@using Microsoft.AspNetCore.SignalR.Client
 
 @inject ConferencesClientService _conferencesClient
 @inject NavigationManager _navigation
@@ -38,10 +39,29 @@ else
 
 @code {
     private List<DTO.ConferenceOverview> _conferences;
+    private HubConnection _hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
-        _conferences = await _conferencesClient.GetConferencesAsync();
+        _hubConnection = new HubConnectionBuilder()
+               .WithUrl(_navigation.ToAbsoluteUri("/conferencesHub"))
+               .Build();
+
+        _hubConnection.On("NewConferenceAdded", async () =>
+        {
+            _conferences = await ListConferences();
+            StateHasChanged();
+            // ...
+        });
+
+        await _hubConnection.StartAsync();
+
+        _conferences = await ListConferences();
+    }
+
+    private async Task<List<DTO.ConferenceOverview>> ListConferences()
+    {
+        return await _conferencesClient.GetConferencesAsync();
     }
 
     private void LoadDetails(Guid id)

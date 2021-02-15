@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using BASTAConfTool.Server.Hubs;
 using BASTAConfTool.Server.Models;
 using BASTAConfTool.Shared.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace BASTAConfTool.Server.Controllers
@@ -15,11 +17,13 @@ namespace BASTAConfTool.Server.Controllers
     {
         private readonly ConferencesDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IHubContext<ConferencesHub> _hubContext;
 
-        public ConferencesController(ConferencesDbContext context, IMapper mapper)
+        public ConferencesController(ConferencesDbContext context, IMapper mapper, IHubContext<ConferencesHub> hubContext)
         {
             _context = context;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         // GET: api/Conferences
@@ -58,6 +62,8 @@ namespace BASTAConfTool.Server.Controllers
 
             _context.Conferences.Add(conf);
             await _context.SaveChangesAsync();
+
+            await _hubContext.Clients.All.SendAsync("NewConferenceAdded");
 
             return CreatedAtAction("GetConference", new { id = conference.ID }, conf);
         }

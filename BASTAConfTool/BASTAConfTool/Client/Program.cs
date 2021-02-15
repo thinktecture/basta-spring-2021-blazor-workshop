@@ -20,6 +20,7 @@ namespace BASTAConfTool.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<ConferencesClientService>();
+            builder.Services.AddSingleton<IDialogService, DialogService>();
 
             await builder.Build().RunAsync();
         }

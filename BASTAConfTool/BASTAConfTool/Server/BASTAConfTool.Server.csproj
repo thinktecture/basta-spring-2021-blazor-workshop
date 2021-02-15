@@ -20,5 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Hubs\" />
   </ItemGroup>
 </Project>

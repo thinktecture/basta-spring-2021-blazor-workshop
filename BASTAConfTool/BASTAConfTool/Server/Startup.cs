@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using FluentValidation.AspNetCore;
 using BASTAConfTool.Shared.Validation;
+using BASTAConfTool.Server.Hubs;
 
 namespace BASTAConfTool.Server
 {
@@ -22,6 +23,8 @@ namespace BASTAConfTool.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<ConferencesDbContext>(
@@ -68,6 +71,7 @@ namespace BASTAConfTool.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHub<ConferencesHub>("/conferencesHub");
                 endpoints.MapFallbackToFile("index.html");
             });
         }

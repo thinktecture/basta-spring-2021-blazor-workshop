@@ -18,6 +18,9 @@ namespace BASTAConfTool.Client.Pages
         [Inject]
         private ConferencesClientService _conferencesClient { get; set; }
 
+        [Inject]
+        private IDialogService _dialogService { get; set; }
+
         private ConferenceDetails _conferenceDetails;
 
         public Conference()
@@ -42,10 +45,15 @@ namespace BASTAConfTool.Client.Pages
 
         private async Task SaveConference()
         {
+            if(!  await _dialogService.ConfirmAsync("Do you want to save?"))
+            {
+                Console.WriteLine("User CANCELED SAVE...");
+                return;
+            }
+
             await _conferencesClient.AddConferenceAsync(_conferenceDetails);
 
             Console.WriteLine("NEW Conference added...");
         }
-
     }
 }
