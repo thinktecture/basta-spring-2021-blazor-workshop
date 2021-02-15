@@ -8,6 +8,11 @@
 
 <h1>Conferences</h1>
 
+<button @onclick="AddConference">Add Conference</button>
+<br />
+<br />
+
+
 @if (_conferences == null)
 {
     <p><em>Fetching conferences...</em></p>
@@ -41,6 +46,11 @@ else
 
     private void LoadDetails(Guid id)
     {
-        _navigation.NavigateTo("conferences/" + id);
+        _navigation.NavigateTo("conferences/show/" + id);
+    }
+
+    private void AddConference()
+    {
+        _navigation.NavigateTo("conferences/new");
     }
 }

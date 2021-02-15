@@ -1,0 +1,48 @@
+﻿@page "/conferences/{mode}"
+@page "/conferences/{mode}/{id:guid}"
+
+@switch (Mode)
+{
+    case ConferenceDetailsModes.Show:
+        <h3>Conference Details</h3>
+        break;
+
+    case ConferenceDetailsModes.New:
+        <h3>New Conference</h3>
+        break;
+
+    case ConferenceDetailsModes.Edit:
+        <h3>Edit Conference</h3>
+        break;
+}
+
+<EditForm Model="_conferenceDetails" OnValidSubmit="@SaveConference">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="form-group">
+        <label for="title">Title</label>
+        <InputText @bind-disabled="@_isShow" @bind-Value="@_conferenceDetails.Title" class="form-control" id="title" placeholder="Title of the conference"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="city">City</label>
+        <InputText @bind-disabled="@_isShow" @bind-Value="@_conferenceDetails.City" class="form-control" id="city" placeholder="Location"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="country">Country</label>
+        <InputText @bind-disabled="@_isShow" @bind-Value="@_conferenceDetails.Country" class="form-control" id="country" placeholder="Location"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="datefrom">From</label>
+        <InputDate @bind-Value="@_conferenceDetails.DateFrom" disabled="@_isShow" class="form-control" id="datefrom" placeholder="Begin"></InputDate>
+    </div>
+    <div class="form-group">
+        <label for="dateto">To</label>
+        <InputDate @bind-Value="@_conferenceDetails.DateTo" disabled="@_isShow" class="form-control" id="dateto" placeholder="End"></InputDate>
+    </div>
+
+    @if (Mode != ConferenceDetailsModes.Show)
+    {
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+</EditForm>
