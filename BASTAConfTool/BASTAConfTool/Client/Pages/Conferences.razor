@@ -22,7 +22,7 @@ else
         <tbody>
             @foreach (var conf in _conferences)
             {
-                <tr @onclick="() => LoadDetails(conf.ID)">
+                <tr @key="@conf.ID" @onclick="() => LoadDetails(conf.ID)">
                     <td>@conf.Title</td>
                 </tr>
             }
